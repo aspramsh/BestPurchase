@@ -1,0 +1,63 @@
+﻿<style type="text/css">
+	.webgrid-table {
+		font-family: Arial,Helvetica,sans-serif;
+		font-size: 14px;
+		font-weight: normal;
+		width: 650px;
+		display: table;
+		border-collapse: collapse;
+		border: solid px #C5C5C5;
+		background-color: white;
+	}
+
+		.webgrid-table td, th {
+			border: 1px solid #C5C5C5;
+			padding: 3px 7px 2px;
+		}
+
+	.webgrid-header, .webgrid-header a {
+		background-color: #0094ff;
+		color: #ffffff;
+		text-align: left;
+		text-decoration: none;
+	}
+
+	.webgrid-footer {
+	}
+
+	.webgrid-row-style {
+		padding: 3px 7px 2px;
+	}
+
+	.webgrid-alternating-row {
+		background-color: azure;
+		padding: 3px 7px 2px;
+	}
+
+	.col1Width {
+		width: 55px;
+	}
+
+	.col2Width {
+		width: 220px;
+	}
+</style>
+
+
+
+
+@model IEnumerable<BestPurchase.ServiceLayer.Models.ProductModel>
+@{
+	ViewBag.Title = "Get All Products";
+	var grid = new WebGrid(source: Model, columnNames: new[]
+	{"Name", "Description", "Price", "ProductCategory"});
+	grid.Pager(WebGridPagerModes.All);
+}
+<div id="gridContent" style="font-family: Arial; padding: 20px;">
+	@grid.GetHtml(columns: grid.Columns(
+	grid.Column(columnName: "Name", header: "Product Name"),
+	grid.Column(columnName: "Description", header: "Product Description"),
+	grid.Column(columnName: "ProductCategory", header: "Product Category"),
+	grid.Column(columnName: "Price", header: "Product Price")))
+</div>
+

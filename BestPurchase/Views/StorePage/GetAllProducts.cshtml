@@ -1,0 +1,29 @@
+﻿<h2>Products Page</h2>
+
+@Html.DropDownList("MyType",
+	EnumHelper.GetSelectList(typeof(BestPurchase.ServiceLayer.Models.CategoryModel)),
+	"Select Product Category",
+	new { @class = "form-control", @id = "myDropDown" })
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+	$('#myDropDown').change(function () {
+
+		var selectedID = $(this).val();
+
+		$.get('/StorePage/ShowFilteredCategory?category=' + selectedID, function (data) {
+
+			$('#toUpdate').html(data);
+
+			$('#toUpdate').fadeIn('fast');
+		});
+
+	});
+</script>
+
+<div id="toUpdate"></div>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"> </script>
+
+
+
+
