@@ -1,63 +1,108 @@
 ﻿<style type="text/css">
-	.webgrid-table {
-		font-family: Arial,Helvetica,sans-serif;
-		font-size: 14px;
-		font-weight: normal;
-		width: 650px;
-		display: table;
-		border-collapse: collapse;
-		border: solid px #C5C5C5;
-		background-color: white;
-	}
+			.webgrid-table {
+				font-family: Arial,Helvetica,sans-serif;
+				font-size: 14px;
+				font-weight: normal;
+				width: 650px;
+				display: table;
+				border-collapse: collapse;
+				border: solid px #C5C5C5;
+				background-color: white;
+			}
 
-		.webgrid-table td, th {
-			border: 1px solid #C5C5C5;
-			padding: 3px 7px 2px;
+				.webgrid-table td, th {
+					border: 1px solid #C5C5C5;
+					padding: 3px 7px 2px;
+				}
+
+			.webgrid-header, .webgrid-header a {
+				background-color: #0094ff;
+				color: #ffffff;
+				text-align: left;
+				text-decoration: none;
+			}
+
+			.webgrid-footer {
+			}
+
+			.webgrid-row-style {
+				padding: 3px 7px 2px;
+			}
+
+			.webgrid-alternating-row {
+				background-color: azure;
+				padding: 3px 7px 2px;
+			}
+
+			.col1Width {
+				width: 55px;
+			}
+
+			.col2Width {
+				width: 220px;
+			}
+		</style>
+
+	@{
+		ViewBag.Title = "Get All Products";
+		var grid = new WebGrid(source: Model, rowsPerPage: 3, columnNames: new[]
+		{"Name", "Description", "Price", "ProductCategory", "Quantity"});
+		grid.Pager(WebGridPagerModes.All);
+	}
+		@using (Html.BeginForm("AddToCart", "StorePage", FormMethod.Post, new { id = "form" }))
+		{
+			int rowNum = 0;
+			<div id="gridContent" style="font-family: Arial; padding: 20px;">
+				@grid.GetHtml(tableStyle: "webgrid-table",
+			headerStyle: "webgrid-header",
+			footerStyle: "webgrid-footer",
+			alternatingRowStyle: "webgrid-alternating-row",
+			selectedRowStyle: "webgrid-selected-row",
+			rowStyle: "webgrid-row-style",
+
+			columns: grid.Columns(
+			grid.Column("Row Number", format: item => rowNum = rowNum + 1),
+			grid.Column(columnName: "Name", header: "Product Name"),
+			grid.Column(columnName: "Description", header: "Product Description"),
+			grid.Column(columnName: "ProductCategory", header: "Product Category"),
+			grid.Column(columnName: "Price", header: "Product Price"),
+			grid.Column(format: (item) => item.GetSelectLink("Add to Cart")),
+			grid.Column(format: @<input type="hidden" name="Id" value="@item.Id" />)))
+				@if (grid.HasSelection)
+				{
+					var pro = (BestPurchase.ServiceLayer.Models.ProductModel)grid.Rows[grid.SelectedIndex].Value;
+					<p><b>Product Name:</b> @pro.Name</p>
+					<p><b>Product Price:</b> @pro.Price</p>
+					<p><b>Product Description:</b> @pro.Description</p>
+					<p><b>Product Category:</b> @pro.ProductCategory</p>
+					var product = (BestPurchase.ServiceLayer.Models.ProductModel)grid.Rows[grid.SelectedIndex].Value;
+					var val = product.Id;
+
+					@Ajax.ActionLink("Add Quantity", "SelectQuantity", new { Id = val }, new AjaxOptions()
+			   {
+				   HttpMethod = "GET",
+				   InsertionMode = InsertionMode.InsertAfter,
+				   UpdateTargetId = "posts-wrapper"
+			   });
+				}
+			</div>
+			<div id="posts-wrapper"></div>
+
 		}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+	$(document).on('click', '#form-submit', function () {
+		$.ajax({
+			url: "AddToCart",
+			type: "POST",
+			data: $('form#my-form').serialize(),
+			success: function (result) {
+				window.location.href = '/StorePage/GetShoppingCartContent'
+			},
+		});
+	});
+</script>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"> </script>
 
-	.webgrid-header, .webgrid-header a {
-		background-color: #0094ff;
-		color: #ffffff;
-		text-align: left;
-		text-decoration: none;
-	}
-
-	.webgrid-footer {
-	}
-
-	.webgrid-row-style {
-		padding: 3px 7px 2px;
-	}
-
-	.webgrid-alternating-row {
-		background-color: azure;
-		padding: 3px 7px 2px;
-	}
-
-	.col1Width {
-		width: 55px;
-	}
-
-	.col2Width {
-		width: 220px;
-	}
-</style>
-
-
-
-
-@model IEnumerable<BestPurchase.ServiceLayer.Models.ProductModel>
-@{
-	ViewBag.Title = "Get All Products";
-	var grid = new WebGrid(source: Model, columnNames: new[]
-	{"Name", "Description", "Price", "ProductCategory"});
-	grid.Pager(WebGridPagerModes.All);
-}
-<div id="gridContent" style="font-family: Arial; padding: 20px;">
-	@grid.GetHtml(columns: grid.Columns(
-	grid.Column(columnName: "Name", header: "Product Name"),
-	grid.Column(columnName: "Description", header: "Product Description"),
-	grid.Column(columnName: "ProductCategory", header: "Product Category"),
-	grid.Column(columnName: "Price", header: "Product Price")))
-</div>
 

@@ -61,11 +61,38 @@ namespace BestPurchase.ServiceLayer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /api/ML/AddProductToCart.
+        /// </summary>
+        internal static string AddProductToCart {
+            get {
+                return ResourceManager.GetString("AddProductToCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /api/ML/DeleteProductFromCart.
+        /// </summary>
+        internal static string DeleteProductFromCart {
+            get {
+                return ResourceManager.GetString("DeleteProductFromCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /api/ML/GetProducts.
         /// </summary>
         internal static string GetProducts {
             get {
                 return ResourceManager.GetString("GetProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to /api/ML/GetShoppingCartContent.
+        /// </summary>
+        internal static string GetShoppingCartContent {
+            get {
+                return ResourceManager.GetString("GetShoppingCartContent", resourceCulture);
             }
         }
     }

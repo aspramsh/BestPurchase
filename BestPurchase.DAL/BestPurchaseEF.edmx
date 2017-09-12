@@ -22,7 +22,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Date" Type="datetime" />
         </EntityType>
@@ -44,6 +44,14 @@
           <Property Name="Description" Type="varchar" MaxLength="100" />
           <Property Name="Price" Type="int" />
           <Property Name="ImageSource" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ShoppingCart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -109,12 +117,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ShoppingCart_ToProduct">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ShoppingCart" Type="Self.ShoppingCart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ShoppingCart">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="BestPurchaseDataBaseModelStoreContainer">
           <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ShoppingCart" EntityType="Self.ShoppingCart" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Category_ToProduct" Association="Self.FK_Category_ToProduct">
             <End Role="Product" EntitySet="Product" />
@@ -131,6 +152,10 @@
           <AssociationSet Name="FK_OrderDetails_ToProduct" Association="Self.FK_OrderDetails_ToProduct">
             <End Role="Product" EntitySet="Product" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ShoppingCart_ToProduct" Association="Self.FK_ShoppingCart_ToProduct">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ShoppingCart" EntitySet="ShoppingCart" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -156,7 +181,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Date" Type="DateTime" Precision="3" />
           <NavigationProperty Name="User" Relationship="Self.FK_Order_ToUser" FromRole="Order" ToRole="User" />
@@ -184,6 +209,16 @@
           <Property Name="ImageSource" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Category" Relationship="Self.FK_Category_ToProduct" FromRole="Product" ToRole="Category" />
           <NavigationProperty Name="OrderDetails" Relationship="Self.FK_OrderDetails_ToProduct" FromRole="Product" ToRole="OrderDetails" />
+          <NavigationProperty Name="ShoppingCarts" Relationship="Self.FK_ShoppingCart_ToProduct" FromRole="Product" ToRole="ShoppingCart" />
+        </EntityType>
+        <EntityType Name="ShoppingCart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="Product" Relationship="Self.FK_ShoppingCart_ToProduct" FromRole="ShoppingCart" ToRole="Product" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -250,12 +285,25 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="BestPurchaseDataBaseEntities" annotation:LazyLoadingEnabled="true">
+        <Association Name="FK_ShoppingCart_ToProduct">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="ShoppingCart" Type="Self.ShoppingCart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ShoppingCart">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BestPurchaseDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__RefactorLog" EntityType="Self.C__RefactorLog" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Orders" EntityType="Self.Order" />
           <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
           <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="ShoppingCarts" EntityType="Self.ShoppingCart" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <AssociationSet Name="FK_Category_ToProduct" Association="Self.FK_Category_ToProduct">
             <End Role="Product" EntitySet="Products" />
@@ -273,13 +321,17 @@
             <End Role="Product" EntitySet="Products" />
             <End Role="OrderDetails" EntitySet="OrderDetails" />
           </AssociationSet>
+          <AssociationSet Name="FK_ShoppingCart_ToProduct" Association="Self.FK_ShoppingCart_ToProduct">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ShoppingCart" EntitySet="ShoppingCarts" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="BestPurchaseDataBaseModelStoreContainer" CdmEntityContainer="BestPurchaseDataBaseEntities">
+        <EntityContainerMapping StorageEntityContainer="BestPurchaseDataBaseModelStoreContainer" CdmEntityContainer="BestPurchaseDBEntities">
           <EntitySetMapping Name="C__RefactorLog">
             <EntityTypeMapping TypeName="BestPurchaseDataBaseModel.C__RefactorLog">
               <MappingFragment StoreEntitySet="__RefactorLog">
@@ -321,6 +373,15 @@
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="ImageSource" ColumnName="ImageSource" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ShoppingCarts">
+            <EntityTypeMapping TypeName="BestPurchaseDataBaseModel.ShoppingCart">
+              <MappingFragment StoreEntitySet="ShoppingCart">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

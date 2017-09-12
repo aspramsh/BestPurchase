@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="34e6195a58664be981749bb6a85ef0d6" Name="Diagram1">
+        <EntityTypeShape EntityType="BestPurchaseDataBaseModel.C__RefactorLog" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestPurchaseDataBaseModel.Category" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestPurchaseDataBaseModel.Order" Width="1.5" PointX="3.75" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestPurchaseDataBaseModel.OrderDetail" Width="1.5" PointX="6" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestPurchaseDataBaseModel.Product" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestPurchaseDataBaseModel.ShoppingCart" Width="1.5" PointX="3" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="BestPurchaseDataBaseModel.User" Width="1.5" PointX="1.5" PointY="10.875" IsExpanded="true" />
+        <AssociationConnector Association="BestPurchaseDataBaseModel.FK_Category_ToProduct" ManuallyRouted="false" />
+        <AssociationConnector Association="BestPurchaseDataBaseModel.FK_Order_ToUser" ManuallyRouted="false" />
+        <AssociationConnector Association="BestPurchaseDataBaseModel.FK_OrderDetails_ToOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="BestPurchaseDataBaseModel.FK_OrderDetails_ToProduct" ManuallyRouted="false" />
+        <AssociationConnector Association="BestPurchaseDataBaseModel.FK_ShoppingCart_ToProduct" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

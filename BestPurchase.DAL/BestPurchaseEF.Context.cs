@@ -13,10 +13,10 @@ namespace BestPurchase.DAL
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BestPurchaseDataBaseEntities : DbContext
+    public partial class BestPurchaseDBEntities : DbContext
     {
-        public BestPurchaseDataBaseEntities()
-            : base("name=BestPurchaseDataBaseEntities")
+        public BestPurchaseDBEntities()
+            : base("name=BestPurchaseDBEntities")
         {
         }
     
@@ -30,6 +30,7 @@ namespace BestPurchase.DAL
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<OrderDetail> OrderDetails { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

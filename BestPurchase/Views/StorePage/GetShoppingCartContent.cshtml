@@ -1,0 +1,120 @@
+﻿@model IEnumerable<BestPurchase.ServiceLayer.Models.CartModel>
+
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+<h2>Shopping Cart</h2>
+<style type="text/css">
+	.webgrid-table {
+		font-family: Arial,Helvetica,sans-serif;
+		font-size: 14px;
+		font-weight: normal;
+		width: 650px;
+		display: table;
+		border-collapse: collapse;
+		border: solid px #C5C5C5;
+		background-color: white;
+	}
+
+		.webgrid-table td, th {
+			border: 1px solid #C5C5C5;
+			padding: 3px 7px 2px;
+		}
+
+	.webgrid-header, .webgrid-header a {
+		background-color: #0094ff;
+		color: #ffffff;
+		text-align: left;
+		text-decoration: none;
+	}
+
+	.webgrid-footer {
+	}
+
+	.webgrid-row-style {
+		padding: 3px 7px 2px;
+	}
+
+	.webgrid-alternating-row {
+		background-color: azure;
+		padding: 3px 7px 2px;
+	}
+
+	.col1Width {
+		width: 55px;
+	}
+
+	.col2Width {
+		width: 220px;
+	}
+</style>
+
+@{
+	var grid = new WebGrid(source: Model, rowsPerPage: 3, columnNames: new[]
+	{"ProductId", "ProductName", "Price", "Quantity"});
+	grid.Pager(WebGridPagerModes.All);
+}
+@using (Html.BeginForm("AddToCart", "StorePage", FormMethod.Post, new { id = "form" }))
+{
+	int rowNum = 0;
+	<div id="gridContent" style="font-family: Arial; padding: 20px;">
+		@grid.GetHtml(tableStyle: "webgrid-table",
+			headerStyle: "webgrid-header",
+			footerStyle: "webgrid-footer",
+			alternatingRowStyle: "webgrid-alternating-row",
+			selectedRowStyle: "webgrid-selected-row",
+			rowStyle: "webgrid-row-style",
+
+			columns: grid.Columns(
+			grid.Column("Row Number", format: item => rowNum = rowNum + 1),
+			grid.Column(columnName: "ProductName", header: "Product Name", format: (item) => item.GetSelectLink(item.ProductName)),
+			grid.Column(columnName: "Price", header: "Product Price"),
+			grid.Column(columnName: "Quantity", header: "Quantity"),
+			grid.Column(format: (item) => Html.ActionLink("Delete", "DeleteItemFromCart", new { productId = item.ProductId}, 
+			new { onclick = "return confirm('Are you sure you want to delete this item?');" })),
+			grid.Column(format: @<input type="hidden" name="Id" value="@item.ProductId" />)))
+		@if (grid.HasSelection)
+		{
+			var cart = (BestPurchase.ServiceLayer.Models.CartModel)grid.Rows[grid.SelectedIndex].Value;
+			var val = cart.ProductId;
+
+			/*@Ajax.ActionLink("Add Quantity", "SelectQuantity", new { Id = val }, new AjaxOptions()
+			   {
+				   HttpMethod = "GET",
+				   InsertionMode = InsertionMode.InsertAfter,
+				   UpdateTargetId = "posts-wrapper"
+			   });*/
+		}
+	</div>
+			/*<div id="posts-wrapper"></div>*/
+
+}
+@{
+	int? TotalPrice = 0;
+	foreach (var item in Model)
+	{
+		TotalPrice += item.Price;
+	}
+	<p>&nbsp &nbsp &nbsp <b>Total Price</b>&nbsp <input value=@TotalPrice readonly />&nbsp &nbsp &nbsp<input type="button" value="Checkout" id="form-submit" /></p>
+	
+
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+	$(document).on('click', '#form-submit', function () {
+		$.ajax({
+			url: "AddToCart",
+			type: "POST",
+			data: $('form#my-form').serialize(),
+			success: function (result) {
+			},
+		});
+	});
+</script>
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"> </script>
+
+
+
+

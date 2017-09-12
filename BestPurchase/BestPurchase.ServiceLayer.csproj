@@ -161,6 +161,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -205,10 +206,12 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\StorePage\GetAllProducts.cshtml" />
     <Content Include="Views\StorePage\ShowFilteredCategory.cshtml" />
+    <Content Include="Views\StorePage\SelectQuantity.cshtml" />
+    <Content Include="Views\StorePage\GetShoppingCartContent.cshtml" />
+    <Content Include="Views\StorePage\AddToCart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -230,6 +233,10 @@
     <ProjectReference Include="..\BestPurchase.DataModel\BestPurchase.DataModel.csproj">
       <Project>{3C075CEE-5585-4FCF-8F01-68AE1FA66623}</Project>
       <Name>BestPurchase.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BestPurchase.Utils\BestPurchase.Utils.csproj">
+      <Project>{ac356933-1566-4ac8-9831-8967b986571c}</Project>
+      <Name>BestPurchase.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
