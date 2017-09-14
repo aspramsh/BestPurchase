@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BestPurchase.ServiceLayer.Models.CartModel>
+﻿@model List<BestPurchase.ServiceLayer.Models.CartModel>
 
 @{
     ViewBag.Title = "Shopping Cart";
@@ -68,52 +68,50 @@
 
 			columns: grid.Columns(
 			grid.Column("Row Number", format: item => rowNum = rowNum + 1),
-			grid.Column(columnName: "ProductName", header: "Product Name", format: (item) => item.GetSelectLink(item.ProductName)),
+			grid.Column(columnName: "ProductName", header: "Product Name", format: (item) => Html.ActionLink(((string)item.ProductName), "GetProductDetails", 
+			new { productId = item.ProductId })),
 			grid.Column(columnName: "Price", header: "Product Price"),
 			grid.Column(columnName: "Quantity", header: "Quantity"),
-			grid.Column(format: (item) => Html.ActionLink("Delete", "DeleteItemFromCart", new { productId = item.ProductId}, 
+			grid.Column(format: (item) => Html.ActionLink("Delete", "DeleteItemFromCart", new { productId = item.ProductId},
 			new { onclick = "return confirm('Are you sure you want to delete this item?');" })),
 			grid.Column(format: @<input type="hidden" name="Id" value="@item.ProductId" />)))
-		@if (grid.HasSelection)
-		{
-			var cart = (BestPurchase.ServiceLayer.Models.CartModel)grid.Rows[grid.SelectedIndex].Value;
-			var val = cart.ProductId;
-
-			/*@Ajax.ActionLink("Add Quantity", "SelectQuantity", new { Id = val }, new AjaxOptions()
-			   {
-				   HttpMethod = "GET",
-				   InsertionMode = InsertionMode.InsertAfter,
-				   UpdateTargetId = "posts-wrapper"
-			   });*/
-		}
 	</div>
-			/*<div id="posts-wrapper"></div>*/
 
+}
+
+@using (Html.BeginForm("GetPaymentAndShippingInfo", "StorePage", FormMethod.Post, new { id = "my-form" }))
+{
+	for (var i = 0; i < Model.Count(); ++i)
+	{
+		var item = Model[i];
+		<div style="display: none;">@Html.EditorFor(model => model[i])</div>
+	}
 }
 @{
 	int? TotalPrice = 0;
 	foreach (var item in Model)
 	{
-		TotalPrice += item.Price;
+		TotalPrice += item.Price * item.Quantity;
 	}
-	<p>&nbsp &nbsp &nbsp <b>Total Price</b>&nbsp <input value=@TotalPrice readonly />&nbsp &nbsp &nbsp<input type="button" value="Checkout" id="form-submit" /></p>
-	
+	<p>&nbsp &nbsp &nbsp <b>Total Price</b>&nbsp <input value=@TotalPrice readonly />&nbsp &nbsp &nbsp<input type="button" value="Checkout" id="myButtonId" 
+	onclick="location.href='@Url.Action("GetShippingInfo", "StorePage")'"/></p>
 
 }
+
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script type="text/javascript">
-	$(document).on('click', '#form-submit', function () {
-		$.ajax({
-			url: "AddToCart",
-			type: "POST",
-			data: $('form#my-form').serialize(),
-			success: function (result) {
-			},
+	$(document).on('click', '#buttonId', function () {
+			$.ajax({
+				url: "GetShippingInfo",
+				type: "POST",
+				data: $('form#my-form').serialize(),
+				success: function (result) {
+				},
+			});
+
 		});
-	});
 </script>
-@Scripts.Render("~/bundles/jquery")
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"> </script>
+
 
 
 

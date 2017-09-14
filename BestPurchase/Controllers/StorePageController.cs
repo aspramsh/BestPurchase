@@ -64,5 +64,30 @@ namespace BestPurchase.ServiceLayer.Controllers
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             return View("GetShoppingCartContent", carts.ProductList);
         }
+        public ActionResult GetShippingInfo()
+        {
+            CartAndUser info = new CartAndUser();
+            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent();
+            CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
+            foreach (var item in carts.ProductList)
+            {
+                info.Cart.Add(item);
+            }
+            return View("GetShippingInfo", info);
+        }
+        
+        [HttpPost]
+        public ActionResult GetShippingInfo(CartAndUser info)
+        {
+            Manager.Instance().AddOrder(info);
+            foreach (var item in info.Cart)
+            {
+                ShoppingCart cart = Manager.Instance().ConvertCartModelToCart(item);
+                Manager.Instance().DeleteItemFromCart(cart);
+            }
+            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent();
+            CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
+            return View("GetShoppingCartContent", carts.ProductList);
+        }
     }
 }

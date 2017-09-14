@@ -95,6 +95,7 @@ namespace BestPurchase.ServiceLayer.Functionals
             Cart.Quantity = cart.Quantity;
             return Cart;
         }
+
         public ShoppingCartCollection GetShoppingCartContent()
         {
             ShoppingCartCollection carts = new ShoppingCartCollection();
@@ -150,5 +151,53 @@ namespace BestPurchase.ServiceLayer.Functionals
         }
         #endregion
 
+        #region Order
+        private User CreateUserFromUserModel(UserModel userModel)
+        {
+            User user = new User();
+            user.FirstName = userModel.FirstName;
+            user.LastName = userModel.LastName;
+            user.Address = userModel.Address;
+            user.City = userModel.City;
+            user.State = userModel.State;
+            user.Country = userModel.Country;
+            user.PostalCode = userModel.PostalCode;
+            user.Phone = userModel.Phone;
+            user.Email = userModel.Email;
+            user.UserName = userModel.UserName;
+            return user;
+        }
+        private Order CreateOrderFromCartContent(List<CartModel> cartContent)
+        {
+            Order order = new Order();
+            order.OrderDate = DateTime.Now;
+            foreach (var item in cartContent)
+            {
+                order.Ordered.ProductList.Add(ConvertCartModelToCart(item).Added);
+                order.Quantity.Add(item.Quantity);
+            }
+            return order;
+        }
+        public string AddOrder(CartAndUser info)
+        {
+            User user = this.CreateUserFromUserModel(info.user);
+            Order order = this.CreateOrderFromCartContent(info.Cart);
+            order.Orderer = user;
+            string baseUrl = ConfigurationManager.ConnectionStrings["MLServerName"].ConnectionString;
+            string url = baseUrl + DestinationNames.AddOrder;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            request.Method = "POST";
+            request.ContentType = "application/octet-stream";
+
+            Stream requestStream = request.GetRequestStream();
+            byte[] bytes = Formatter.Serialize(order);
+            requestStream.Write(bytes, 0, bytes.Length);
+
+            WebResponse response = request.GetResponse();
+            Stream str = response.GetResponseStream();
+            return "Added";
+        }
+        #endregion
     }
 }

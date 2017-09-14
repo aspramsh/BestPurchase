@@ -161,8 +161,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartAndUser.cs" />
     <Compile Include="Models\CartModel.cs" />
     <Compile Include="Models\ProductModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +211,9 @@
     <Content Include="Views\StorePage\SelectQuantity.cshtml" />
     <Content Include="Views\StorePage\GetShoppingCartContent.cshtml" />
     <Content Include="Views\StorePage\AddToCart.cshtml" />
+    <Content Include="Views\StorePage\GetShippingInfo.cshtml" />
+    <Content Include="Views\StorePage\GetPaymentAndShippingInfo.cshtml" />
+    <Content Include="Views\StorePage\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

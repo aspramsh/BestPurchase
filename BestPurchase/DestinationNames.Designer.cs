@@ -61,6 +61,15 @@ namespace BestPurchase.ServiceLayer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /api/ML/AddOrder.
+        /// </summary>
+        internal static string AddOrder {
+            get {
+                return ResourceManager.GetString("AddOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /api/ML/AddProductToCart.
         /// </summary>
         internal static string AddProductToCart {

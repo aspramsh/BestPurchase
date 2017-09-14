@@ -74,6 +74,7 @@ namespace BestPurchase.MiddleLayer.Functionals
             return "Done";
         }
 
+
         public ShoppingCartCollection GetShoppingCartContent()
         {
             ShoppingCartCollection carts = new ShoppingCartCollection();
@@ -122,6 +123,29 @@ namespace BestPurchase.MiddleLayer.Functionals
             return "Done";
         }
 
+        #endregion
+
+        #region Order
+        public string AddOrder(byte[] byteArray)
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream stream = new MemoryStream(byteArray);
+            var order = bf.Deserialize(stream) as Order;
+            string baseUrl = ConfigurationManager.ConnectionStrings["DALServerName"].ConnectionString;
+            string url = baseUrl + DestinationNames.AddOrder;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            request.Method = "POST";
+            request.ContentType = "application/octet-stream";
+
+            Stream requestStream = request.GetRequestStream();
+            byte[] bytes = Formatter.Serialize(order);
+            requestStream.Write(bytes, 0, bytes.Length);
+
+            WebResponse response = request.GetResponse();
+            Stream str = response.GetResponseStream();
+            return "Done";
+        }
         #endregion
     }
 }

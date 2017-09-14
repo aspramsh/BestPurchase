@@ -1,0 +1,79 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>User Details</h1>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryval")
+<head>
+	<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+	<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+	<script src="~/Scripts/jquery.validate.min.js"></script>
+	<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+	</head>
+
+	@model BestPurchase.ServiceLayer.Models.CartAndUser
+	@using (Html.BeginForm("actionName", "controllerName", FormMethod.Post, new { id = "my-form" }))
+	{
+		<label style=" margin-right:20px;">First Name: </label>
+		@Html.TextBoxFor(x => x.user.FirstName, new { required = "required", @class = "form-control" })
+		<br>
+		@Html.ValidationMessageFor(x => x.user.FirstName, "", new { @class = "text-danger" })
+		<label style=" margin-right:20px;">Last Name: </label>
+		@Html.TextBoxFor(x => x.user.LastName, new { @required = "required", @class = "form-control" })
+		<br>
+		@Html.ValidationMessageFor(x => x.user.LastName)
+		<label style=" margin-right:20px;">Address: </label>
+		@Html.TextBoxFor(x => x.user.Address, new { @required = "required", @class = "form-control" })
+		<br>
+		@Html.ValidationMessageFor(x => x.user.Address)
+		<label style=" margin-right:20px;">City: </label>
+		@Html.TextBoxFor(x => x.user.City, new { @class = "form-control" })
+		<br>
+		<label style=" margin-right:20px;">State: </label>
+		@Html.TextBoxFor(x => x.user.State, new { @class = "form-control" })
+		<br>
+		<label style=" margin-right:20px;">Postal Code: </label>
+		@Html.TextBoxFor(x => x.user.PostalCode, new { @class = "form-control" })
+		<br>
+		<label style=" margin-right:20px;">Country: </label>
+		@Html.TextBoxFor(x => x.user.Country, new { @class = "form-control" })
+		<label style=" margin-right:20px;">Phone: </label>
+		@Html.TextBoxFor(x => x.user.Phone, new { @class = "form-control" })
+		<br>
+		<label style=" margin-right:20px;">E-Mail: </label>
+		@Html.TextBoxFor(x => x.user.Email, new { @required = "required", @class = "form-control" })
+		<br>
+		@Html.ValidationMessageFor(x => x.user.Email)
+		<label style=" margin-right:20px;">Username: </label>
+		@Html.TextBoxFor(x => x.user.UserName, new { @class = "form-control" })
+		<br>
+		<br />
+		<br />
+		for (var i = 0; i < Model.Cart.Count(); ++i)
+		{
+			var item = Model.Cart[i];
+			<div style="display: none;">@Html.EditorFor(model => model.Cart[i])</div>
+		}
+		<input type="button" value="Submit" id="form-submit" class="btn btn-default"/>
+	}
+	<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript">
+		$(document).on('click', '#form-submit', function () {
+			$.ajax({
+				url: "GetShippingInfo",
+				type: "POST",
+				data: $('form#my-form').serialize(),
+				success: function (result) {
+					alert("Thank You For Your Order!");
+					window.location.href = '/StorePage/GetShoppingCartContent'
+				},
+			});
+
+		});
+	</script>
+
+
+
+
+
+

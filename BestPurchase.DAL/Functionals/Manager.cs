@@ -111,5 +111,52 @@ namespace BestPurchase.DAL.Functionals
             return "Done";
         }
         #endregion
+
+        #region Order
+        public string AddOrder(byte[] byteArray)
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            MemoryStream stream = new MemoryStream(byteArray);
+            var order = bf.Deserialize(stream) as BestPurchase.DataModel.Order;
+            Order dbOrder = ConvertBLOrderToDBOrder(order);
+            using (var context = new BestPurchaseDBEntities())
+            {
+                context.Orders.Add(dbOrder);
+                context.SaveChanges();
+            }
+            return "Added";
+        }
+
+        private Order ConvertBLOrderToDBOrder(DataModel.Order order)
+        {
+            Order dbOrder = new Order();
+            dbOrder.Date = order.OrderDate;
+            for (int i = 0; i < order.Ordered.ProductList.Count(); ++i)
+            {
+                OrderDetail details = new OrderDetail();
+                details.ProductId = order.Ordered.ProductList[i].Id;
+                details.Quantity = order.Quantity[i];
+                dbOrder.OrderDetails.Add(details);
+            }
+            dbOrder.User = ConvertBLUserToDbUser(order.Orderer);
+            return dbOrder;
+        }
+
+        private User ConvertBLUserToDbUser(DataModel.User orderer)
+        {
+            User user = new User();
+            user.FirstName = orderer.FirstName;
+            user.LastName = orderer.LastName;
+            user.Address = orderer.Address;
+            user.City = orderer.City;
+            user.State = orderer.State;
+            user.Country = orderer.Country;
+            user.Phone = orderer.Phone;
+            user.PostalCode = orderer.PostalCode;
+            user.Email = orderer.Email;
+            user.Username = orderer.UserName;
+            return user;
+        }
+        #endregion
     }
 }

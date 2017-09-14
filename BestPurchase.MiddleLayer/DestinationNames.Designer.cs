@@ -61,6 +61,15 @@ namespace BestPurchase.MiddleLayer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /api/DAL/AddOrder.
+        /// </summary>
+        internal static string AddOrder {
+            get {
+                return ResourceManager.GetString("AddOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /api/DAL/AddProductToCart.
         /// </summary>
         internal static string AddProductToCart {

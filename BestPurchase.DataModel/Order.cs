@@ -10,14 +10,16 @@ namespace BestPurchase.DataModel
     public class Order : EntityBase
     {
         public int Id { get; set; }
-        public Product Ordered { get; set; }
+        public Products Ordered { get; set; }
         public User Orderer { get; set; }
         public Order()
         {
-            Ordered = new Product();
+            Ordered = new Products();
             Orderer = new User();
+            Quantity = new List<int?>();
         }
         public DateTime OrderDate { get; set; }
-        int Quantity { get; set; }
+        // Remember to change this to double
+        public List<int?> Quantity { get; set; }
     }
 }

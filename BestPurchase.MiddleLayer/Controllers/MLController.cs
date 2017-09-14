@@ -63,5 +63,18 @@ namespace BestPurchase.MiddleLayer.Controllers
 
             return "success.";
         }
+        [Route("api/ML/AddOrder")]
+        [HttpPost]
+        public string AddOrder()
+        {
+            Task<byte[]> task = this.Request.Content.ReadAsByteArrayAsync();
+
+            task.Wait();
+
+            byte[] byteArray = task.Result;
+            Manager.Instance().AddOrder(byteArray);
+
+            return "success.";
+        }
     }
 }
