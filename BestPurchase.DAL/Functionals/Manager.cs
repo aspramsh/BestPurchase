@@ -48,6 +48,21 @@ namespace BestPurchase.DAL.Functionals
             Products products = ConvertDBProductsToBLProducts(dbList);
             return Formatter.Serialize<Products>(products);
         }
+        public byte[] GetProductById(int productId)
+        {
+            BestPurchaseDBEntities db = new BestPurchaseDBEntities();
+            Product product = db.Products.FirstOrDefault(c => c.Id == productId);
+            DataModel.Product blProduct = ConvertDBProductToBLProduct(product);
+
+            // Getting image as byte array
+            MemoryStream memoryStream = new MemoryStream();
+            byte[] fileContents;
+            var path = Path.Combine(HttpContext.Current.Server.MapPath("~/Pictures"), 
+                product.ImageSource);
+            fileContents = File.ReadAllBytes(path);
+            blProduct.ImageSource = fileContents;
+            return Formatter.Serialize(blProduct);
+        }
         #endregion
 
         #region Shopping Cart

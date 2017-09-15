@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+@model BestPurchase.ServiceLayer.Models.ProductModel
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Get Product Details</title>
+</head>
+	<h1>Product Details</h1>
+	<div class="container">
+
+		<img src="data:image;base64,@System.Convert.ToBase64String(Model.ImageStream)" width="200" height="200"/>
+	</div>
+
+    <div> 
+			<b>Product Name:</b> @Model.Name<br />
+			<b>Product Category:</b>  @Model.ProductCategory<br />
+			<b>Product Description:</b> @Model.Description<br />
+			<b>Product Price:</b> @Model.Price<br />
+
+		</div>
+
+
+
+
+
+
+
+

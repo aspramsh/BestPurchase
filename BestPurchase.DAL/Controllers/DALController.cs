@@ -75,5 +75,17 @@ namespace BestPurchase.DAL.Controllers
 
             return "success.";
         }
+        [Route("api/DAL/GetProductById")]
+        [HttpGet]
+        public HttpResponseMessage DownLoadAttachments(int Id)
+        {
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(Functionals.Manager.Instance().GetProductById(Id))
+            };
+
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            return result;
+        }
     }
 }

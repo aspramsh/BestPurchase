@@ -76,5 +76,16 @@ namespace BestPurchase.MiddleLayer.Controllers
 
             return "success.";
         }
+        [Route("api/ML/GetProductById")]
+        [HttpGet]
+        public HttpResponseMessage GetProductById(int Id)
+        {
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(Manager.Instance().GetProcuctById(Id))
+            };
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            return result;
+        }
     }
 }

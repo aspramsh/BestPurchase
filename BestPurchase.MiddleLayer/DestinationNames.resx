@@ -126,6 +126,9 @@
   <data name="DeleteProductFromCart" xml:space="preserve">
     <value>/api/DAL/DeleteProductFromCart</value>
   </data>
+  <data name="GetProductById" xml:space="preserve">
+    <value>/api/DAL/GetProductById?Id=</value>
+  </data>
   <data name="GetProducts" xml:space="preserve">
     <value>/api/DAL/GetProducts</value>
   </data>

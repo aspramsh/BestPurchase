@@ -14,5 +14,6 @@ namespace BestPurchase.DataModel
         public string Description { get; set; }
         public int? Price { get; set; }
         public Category ProductCategory { get; set; }
+        public byte[] ImageSource { get; set; }
     }
 }

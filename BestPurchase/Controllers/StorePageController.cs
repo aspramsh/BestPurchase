@@ -89,5 +89,11 @@ namespace BestPurchase.ServiceLayer.Controllers
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             return View("GetShoppingCartContent", carts.ProductList);
         }
+        public ActionResult GetProductDetails(int productId)
+        {
+            Product product = Manager.Instance().GetProductById(productId);
+            ProductModel pro = Manager.Instance().ConvertProductToProductModel(product);
+            return View("GetProductDetails", pro);
+        }
     }
 }

@@ -46,17 +46,23 @@ namespace BestPurchase.ServiceLayer.Functionals
             }
             return products;
         }
+        public ProductModel ConvertProductToProductModel(Product product)
+        {
+            ProductModel Product = new ProductModel();
+            Product.Id = product.Id;
+            Product.Name = product.Name;
+            Product.Price = product.Price;
+            Product.ProductCategory = ConvertFromEnumToString(product.ProductCategory);
+            Product.Description = product.Description;
+            Product.ImageStream = product.ImageSource;
+            return Product;
+        }
         public ProductsModel ConvertToServiceLayerEntity(Products products)
         {
             ProductsModel prs = new ProductsModel();
             foreach (var item in products.ProductList)
             {
-                ProductModel product = new ProductModel();
-                product.Id = item.Id;
-                product.Name = item.Name;
-                product.Price = item.Price;
-                product.ProductCategory = ConvertFromEnumToString(item.ProductCategory);
-                product.Description = item.Description;
+                ProductModel product = this.ConvertProductToProductModel(item);
                 prs.ProductList.Add(product);
             }
             return prs;
@@ -66,6 +72,27 @@ namespace BestPurchase.ServiceLayer.Functionals
         {
             string productCategory = Regex.Replace(category.ToString(), "(?<=[^A-Z])(?=[A-Z])", " "); ;
             return productCategory;
+        }
+        public Product GetProductById(int Id)
+        {
+            Product product = new Product();
+            string baseUrl = ConfigurationManager.ConnectionStrings["MLServerName"].ConnectionString;
+            string url = baseUrl + DestinationNames.GetProductById + Id.ToString();
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            request.Method = "GET";
+
+            WebResponse response = request.GetResponse();
+            using (Stream stream = response.GetResponseStream())
+            {
+                MemoryStream memStr = new MemoryStream();
+                stream.CopyTo(memStr);
+                memStr.Flush();
+                memStr.Position = 0;
+                memStr.ToArray();
+                BinaryFormatter bfd = new BinaryFormatter();
+                product = bfd.Deserialize(memStr) as Product;
+                return product;            }
         }
         #endregion
 
