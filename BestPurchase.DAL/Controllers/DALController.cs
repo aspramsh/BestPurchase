@@ -77,7 +77,7 @@ namespace BestPurchase.DAL.Controllers
         }
         [Route("api/DAL/GetProductById")]
         [HttpGet]
-        public HttpResponseMessage GetProductById(int Id)
+        public HttpResponseMessage DownLoadAttachments(int Id)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK)
             {
