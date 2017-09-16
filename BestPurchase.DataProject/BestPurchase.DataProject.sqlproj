@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <DefineDebug>false</DefineDebug>
-    <DefineTrace>true</DefineTrace>
+    <DefineTrace>false</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -43,7 +43,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <DefineDebug>true</DefineDebug>
-    <DefineTrace>true</DefineTrace>
+    <DefineTrace>false</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -65,8 +65,13 @@
     <Build Include="User.sql" />
     <Build Include="OrderDetails.sql" />
     <Build Include="ShoppingCart.sql" />
+    <Build Include="PopulateCategories.sql" />
+    <Build Include="PopulateProductTable.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="BestPurchase.DataProject.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Script.ExecuteSPs.sql" />
   </ItemGroup>
 </Project>
