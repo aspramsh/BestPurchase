@@ -39,7 +39,9 @@ namespace BestPurchase.ServiceLayer.Controllers
         [HttpPost]
         public ActionResult AddToCart(CartModel cart)
         {
-            ShoppingCart Cart = Manager.Instance().ConvertCartModelToCart(cart);
+            var Cart = ShoppingCart.GetCart(this.HttpContext);
+            Cart.Added.Id = cart.ProductId;
+            Cart.Quantity = cart.Quantity;
             Manager.Instance().AddProductToCart(Cart);
             return View("AddToCart");
         }
@@ -51,23 +53,26 @@ namespace BestPurchase.ServiceLayer.Controllers
         }
         public ActionResult GetShoppingCartContent()
         {
-            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent();
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent(cart.CartId);
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             return View("GetShoppingCartContent", carts.ProductList);
         }
         public ActionResult DeleteItemFromCart(int productId)
         {
-            ShoppingCart cart = new ShoppingCart();
+            // Remove the item from the cart
+            var cart = ShoppingCart.GetCart(this.HttpContext);
             cart.Added.Id = productId;
             Manager.Instance().DeleteItemFromCart(cart);
-            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent();
+            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent(cart.CartId);
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             return View("GetShoppingCartContent", carts.ProductList);
         }
         public ActionResult GetShippingInfo()
         {
+            var cart = ShoppingCart.GetCart(this.HttpContext);
             CartAndUser info = new CartAndUser();
-            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent();
+            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent(cart.CartId);
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             foreach (var item in carts.ProductList)
             {
@@ -85,9 +90,16 @@ namespace BestPurchase.ServiceLayer.Controllers
                 ShoppingCart cart = Manager.Instance().ConvertCartModelToCart(item);
                 Manager.Instance().DeleteItemFromCart(cart);
             }
-            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent();
+            var Cart = ShoppingCart.GetCart(this.HttpContext);
+            ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent(Cart.CartId);
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             return View("GetShoppingCartContent", carts.ProductList);
+        }
+        public ActionResult GetProductDetails(int productId)
+        {
+            Product product = Manager.Instance().GetProductById(productId);
+            ProductModel pro = Manager.Instance().ConvertProductToProductModel(product);
+            return View("GetProductDetails", pro);
         }
     }
 }

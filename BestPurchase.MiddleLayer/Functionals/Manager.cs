@@ -50,6 +50,24 @@ namespace BestPurchase.MiddleLayer.Functionals
             byte[] Bytes = Formatter.Serialize<Products>(products);
             return Bytes;
         }
+        public byte[] GetProcuctById(int Id)
+        {
+            string baseUrl = ConfigurationManager.ConnectionStrings["DALServerName"].ConnectionString;
+            string url = baseUrl + DestinationNames.GetProductById + Id;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+
+            request.Method = "GET";
+
+            WebResponse response = request.GetResponse();
+            using (Stream stream = response.GetResponseStream())
+            {
+                MemoryStream memStr = new MemoryStream();
+                stream.CopyTo(memStr);
+                memStr.Flush();
+                memStr.Position = 0;
+                return memStr.ToArray();
+            }
+        }
         #endregion
 
         #region ShoppingCart
@@ -75,11 +93,11 @@ namespace BestPurchase.MiddleLayer.Functionals
         }
 
 
-        public ShoppingCartCollection GetShoppingCartContent()
+        public ShoppingCartCollection GetShoppingCartContent(string cartId)
         {
             ShoppingCartCollection carts = new ShoppingCartCollection();
             string baseUrl = ConfigurationManager.ConnectionStrings["DALServerName"].ConnectionString;
-            string url = baseUrl + DestinationNames.GetShoppingCartContent;
+            string url = baseUrl + DestinationNames.GetShoppingCartContent + cartId;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
             request.Method = "GET";
@@ -96,9 +114,9 @@ namespace BestPurchase.MiddleLayer.Functionals
             }
             return carts;
         }
-        public byte[] SerializeShoppingCartContent()
+        public byte[] SerializeShoppingCartContent(string cartId)
         {
-            ShoppingCartCollection carts = this.GetShoppingCartContent();
+            ShoppingCartCollection carts = this.GetShoppingCartContent(cartId);
             byte[] Bytes = Formatter.Serialize(carts);
             return Bytes;
         }

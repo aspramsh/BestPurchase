@@ -88,6 +88,15 @@ namespace BestPurchase.MiddleLayer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /api/DAL/GetProductById?Id=.
+        /// </summary>
+        internal static string GetProductById {
+            get {
+                return ResourceManager.GetString("GetProductById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /api/DAL/GetProducts.
         /// </summary>
         internal static string GetProducts {
@@ -97,7 +106,7 @@ namespace BestPurchase.MiddleLayer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /api/DAL/GetShoppingCartContent.
+        ///   Looks up a localized string similar to /api/DAL/GetShoppingCartContent?cartId=.
         /// </summary>
         internal static string GetShoppingCartContent {
             get {

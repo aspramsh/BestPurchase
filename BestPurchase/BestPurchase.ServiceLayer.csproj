@@ -213,7 +213,7 @@
     <Content Include="Views\StorePage\AddToCart.cshtml" />
     <Content Include="Views\StorePage\GetShippingInfo.cshtml" />
     <Content Include="Views\StorePage\GetPaymentAndShippingInfo.cshtml" />
-    <Content Include="Views\StorePage\View.cshtml" />
+    <Content Include="Views\StorePage\GetProductDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

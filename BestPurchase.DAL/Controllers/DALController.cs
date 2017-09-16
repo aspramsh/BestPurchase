@@ -39,11 +39,11 @@ namespace BestPurchase.DAL.Controllers
         }
         [Route("api/DAL/GetShoppingCartContent")]
         [HttpGet]
-        public HttpResponseMessage GetShoppingCartContent()
+        public HttpResponseMessage GetShoppingCartContent(string cartId)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new ByteArrayContent(Functionals.Manager.Instance().GetShoppingCartContent())
+                Content = new ByteArrayContent(Functionals.Manager.Instance().GetShoppingCartContent(cartId))
             };
 
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
@@ -74,6 +74,18 @@ namespace BestPurchase.DAL.Controllers
             Manager.Instance().AddOrder(byteArray);
 
             return "success.";
+        }
+        [Route("api/DAL/GetProductById")]
+        [HttpGet]
+        public HttpResponseMessage GetProductById(int Id)
+        {
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(Functionals.Manager.Instance().GetProductById(Id))
+            };
+
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            return result;
         }
     }
 }

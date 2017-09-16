@@ -48,8 +48,9 @@
         <EntityType Name="ShoppingCart">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="ProductId" Type="int" Nullable="false" />
           <Property Name="Quantity" Type="int" />
         </EntityType>
@@ -214,8 +215,9 @@
         <EntityType Name="ShoppingCart">
           <Key>
             <PropertyRef Name="Id" />
+            <PropertyRef Name="ProductId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ProductId" Type="Int32" Nullable="false" />
           <Property Name="Quantity" Type="Int32" />
           <NavigationProperty Name="Product" Relationship="Self.FK_ShoppingCart_ToProduct" FromRole="ShoppingCart" ToRole="Product" />

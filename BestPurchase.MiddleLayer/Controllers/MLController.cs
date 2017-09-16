@@ -40,11 +40,11 @@ namespace BestPurchase.MiddleLayer.Controllers
         }
         [Route("api/ML/GetShoppingCartContent")]
         [HttpGet]
-        public HttpResponseMessage GetShoppingCartContent()
+        public HttpResponseMessage GetShoppingCartContent(string cartId)
         {
             var result = new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new ByteArrayContent(Manager.Instance().SerializeShoppingCartContent())
+                Content = new ByteArrayContent(Manager.Instance().SerializeShoppingCartContent(cartId))
             };
 
             result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
@@ -75,6 +75,17 @@ namespace BestPurchase.MiddleLayer.Controllers
             Manager.Instance().AddOrder(byteArray);
 
             return "success.";
+        }
+        [Route("api/ML/GetProductById")]
+        [HttpGet]
+        public HttpResponseMessage GetProductById(int Id)
+        {
+            var result = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new ByteArrayContent(Manager.Instance().GetProcuctById(Id))
+            };
+            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+            return result;
         }
     }
 }

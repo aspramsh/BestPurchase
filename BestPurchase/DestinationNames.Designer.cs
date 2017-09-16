@@ -88,6 +88,15 @@ namespace BestPurchase.ServiceLayer {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to /api/ML/GetProductById?Id=.
+        /// </summary>
+        internal static string GetProductById {
+            get {
+                return ResourceManager.GetString("GetProductById", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /api/ML/GetProducts.
         /// </summary>
         internal static string GetProducts {
@@ -97,7 +106,7 @@ namespace BestPurchase.ServiceLayer {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to /api/ML/GetShoppingCartContent.
+        ///   Looks up a localized string similar to /api/ML/GetShoppingCartContent?cartId=.
         /// </summary>
         internal static string GetShoppingCartContent {
             get {

@@ -48,12 +48,28 @@ namespace BestPurchase.DAL.Functionals
             Products products = ConvertDBProductsToBLProducts(dbList);
             return Formatter.Serialize<Products>(products);
         }
+        public byte[] GetProductById(int productId)
+        {
+            BestPurchaseDBEntities db = new BestPurchaseDBEntities();
+            Product product = db.Products.FirstOrDefault(c => c.Id == productId);
+            DataModel.Product blProduct = ConvertDBProductToBLProduct(product);
+
+            // Getting image as byte array
+            MemoryStream memoryStream = new MemoryStream();
+            byte[] fileContents;
+            var path = Path.Combine(HttpContext.Current.Server.MapPath("~/Pictures"), 
+                product.ImageSource);
+            fileContents = File.ReadAllBytes(path);
+            blProduct.ImageSource = fileContents;
+            return Formatter.Serialize(blProduct);
+        }
         #endregion
 
         #region Shopping Cart
         public ShoppingCart ConvertBLCartToDBCart(BestPurchase.DataModel.ShoppingCart cart)
         {
             ShoppingCart Cart = new ShoppingCart();
+            Cart.Id = cart.CartId;
             Cart.ProductId = cart.Added.Id;
             Cart.Quantity = cart.Quantity;
             return Cart;
@@ -67,16 +83,31 @@ namespace BestPurchase.DAL.Functionals
             ShoppingCart Cart = this.ConvertBLCartToDBCart(cart);
             using (var context = new BestPurchaseDBEntities())
             {
-                context.ShoppingCarts.Add(Cart);
+                var cartItem = context.ShoppingCarts.SingleOrDefault(
+                c => c.Id == Cart.Id
+                && c.ProductId == Cart.ProductId);
+
+                // Creating new shopping cart
+                if (cartItem == null)
+                {
+                    context.ShoppingCarts.Add(Cart);
+                }
+                else
+                {
+                    // Incrementing quantity if the item is already in the cart
+                    cartItem.Quantity += Cart.Quantity;
+                }
+                // Save changes
                 context.SaveChanges();
+
             }
             return "Done";
         }
 
-        public byte[] GetShoppingCartContent()
+        public byte[] GetShoppingCartContent(string cartId)
         {
             BestPurchaseDBEntities db = new BestPurchaseDBEntities();
-            var dbList = db.ShoppingCarts.ToList();
+            var dbList = db.ShoppingCarts.Where(c => c.Id == cartId).ToList();
             ShoppingCartCollection carts = ConvertDBCartsToBLCarts(dbList, db);
             return Formatter.Serialize(carts);
         }
@@ -91,6 +122,7 @@ namespace BestPurchase.DAL.Functionals
                 DataModel.Product pro = ConvertDBProductToBLProduct(product);
                 cart.Added = pro;
                 cart.Quantity = item.Quantity;
+                cart.CartId = item.Id;
                 carts.ListOfCarts.Add(cart);
             }
             return carts;
@@ -103,8 +135,8 @@ namespace BestPurchase.DAL.Functionals
             ShoppingCart Cart = this.ConvertBLCartToDBCart(cart);
             using (var context = new BestPurchaseDBEntities())
             {
-                var itemToRemove = context.ShoppingCarts.SingleOrDefault(x => 
-                x.ProductId == Cart.ProductId);
+                var itemToRemove = context.ShoppingCarts.SingleOrDefault(x =>
+                cart.CartId == Cart.Id && x.ProductId == Cart.ProductId);
                 context.ShoppingCarts.Remove(itemToRemove);
                 context.SaveChanges();
             }

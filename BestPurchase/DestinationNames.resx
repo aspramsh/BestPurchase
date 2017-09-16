@@ -126,10 +126,13 @@
   <data name="DeleteProductFromCart" xml:space="preserve">
     <value>/api/ML/DeleteProductFromCart</value>
   </data>
+  <data name="GetProductById" xml:space="preserve">
+    <value>/api/ML/GetProductById?Id=</value>
+  </data>
   <data name="GetProducts" xml:space="preserve">
     <value>/api/ML/GetProducts</value>
   </data>
   <data name="GetShoppingCartContent" xml:space="preserve">
-    <value>/api/ML/GetShoppingCartContent</value>
+    <value>/api/ML/GetShoppingCartContent?cartId=</value>
   </data>
 </root>
