@@ -1,4 +1,7 @@
 ﻿<h2>Products Page</h2>
+@{
+	ViewBag.Title = "Available Products";
+}
 
 @Html.DropDownList("MyType",
 	EnumHelper.GetSelectList(typeof(BestPurchase.ServiceLayer.Models.CategoryModel)),

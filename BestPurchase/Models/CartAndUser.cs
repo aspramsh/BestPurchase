@@ -9,7 +9,6 @@ namespace BestPurchase.ServiceLayer.Models
     public class CartAndUser
     {
         public List<CartModel> Cart { get; set; }
-        [Required]
         public UserModel user { get; set; }
         public CartAndUser()
         {

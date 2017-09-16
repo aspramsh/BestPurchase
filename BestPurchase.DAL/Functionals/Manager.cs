@@ -136,7 +136,7 @@ namespace BestPurchase.DAL.Functionals
             using (var context = new BestPurchaseDBEntities())
             {
                 var itemToRemove = context.ShoppingCarts.SingleOrDefault(x =>
-                cart.CartId == Cart.Id && x.ProductId == Cart.ProductId);
+                cart.CartId == x.Id && x.ProductId == Cart.ProductId);
                 context.ShoppingCarts.Remove(itemToRemove);
                 context.SaveChanges();
             }

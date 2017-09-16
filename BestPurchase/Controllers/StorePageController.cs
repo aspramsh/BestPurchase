@@ -85,12 +85,13 @@ namespace BestPurchase.ServiceLayer.Controllers
         public ActionResult GetShippingInfo(CartAndUser info)
         {
             Manager.Instance().AddOrder(info);
+            var Cart = ShoppingCart.GetCart(this.HttpContext);
             foreach (var item in info.Cart)
             {
                 ShoppingCart cart = Manager.Instance().ConvertCartModelToCart(item);
+                cart.CartId = Cart.CartId;
                 Manager.Instance().DeleteItemFromCart(cart);
             }
-            var Cart = ShoppingCart.GetCart(this.HttpContext);
             ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent(Cart.CartId);
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             return View("GetShoppingCartContent", carts.ProductList);
