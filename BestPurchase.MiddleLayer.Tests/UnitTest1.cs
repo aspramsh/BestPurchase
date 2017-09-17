@@ -11,8 +11,6 @@ namespace BestPurchase.MiddleLayer.Tests
         [TestMethod]
         public void TestMethod1()
         {
-            string cartId = "55";
-            byte[] bytes = Manager.Instance().SerializeShoppingCartContent(cartId);
         }
     }
 }
