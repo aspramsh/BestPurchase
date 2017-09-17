@@ -60,9 +60,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BestPurchase.DataModel\BestPurchase.DataModel.csproj">
+      <Project>{3C075CEE-5585-4FCF-8F01-68AE1FA66623}</Project>
+      <Name>BestPurchase.DataModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BestPurchase.MiddleLayer\BestPurchase.MiddleLayer.csproj">
       <Project>{032D5830-9D4B-4281-9AFC-532C2F5017EF}</Project>
       <Name>BestPurchase.MiddleLayer</Name>

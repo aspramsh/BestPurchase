@@ -8,7 +8,7 @@ namespace BestPurchase.ServiceLayer.Models
 {
     public class UserModel
     {
-        [Required(ErrorMessage = "First Name is required")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "First Name is required")]
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
