@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using System.Web.Routing;
 
 namespace BestPurchase.ServiceLayer.Controllers
 {
@@ -68,25 +68,25 @@ namespace BestPurchase.ServiceLayer.Controllers
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             return View("GetShoppingCartContent", carts.ProductList);
         }
-        public ActionResult GetShippingInfo()
+        public ActionResult AddOrder()
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            CartAndUser info = new CartAndUser();
+            OrderModel order = new OrderModel();
             ShoppingCartCollection cartCollection = Manager.Instance().GetShoppingCartContent(cart.CartId);
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             foreach (var item in carts.ProductList)
             {
-                info.Cart.Add(item);
+                order.Cart.Add(item);
             }
-            return View("GetShippingInfo", info);
+            return View("AddOrder", order);
         }
-        
+
         [HttpPost]
-        public ActionResult GetShippingInfo(CartAndUser info)
+        public ActionResult AddOrder(OrderModel order)
         {
-            Manager.Instance().AddOrder(info);
+            Manager.Instance().AddOrder(order);
             var Cart = ShoppingCart.GetCart(this.HttpContext);
-            foreach (var item in info.Cart)
+            foreach (var item in order.Cart)
             {
                 ShoppingCart cart = Manager.Instance().ConvertCartModelToCart(item);
                 cart.CartId = Cart.CartId;
@@ -96,6 +96,7 @@ namespace BestPurchase.ServiceLayer.Controllers
             CartsCollection carts = Manager.Instance().ConvertBLCartsToSLCarts(cartCollection);
             return View("GetShoppingCartContent", carts.ProductList);
         }
+        
         public ActionResult GetProductDetails(int productId)
         {
             Product product = Manager.Instance().GetProductById(productId);

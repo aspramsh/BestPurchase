@@ -94,7 +94,7 @@
 		TotalPrice += item.Price * item.Quantity;
 	}
 	<p>&nbsp &nbsp &nbsp <b>Total Price</b>&nbsp <input value=@TotalPrice readonly />&nbsp &nbsp &nbsp<input type="button" value="Checkout" id="myButtonId" 
-	onclick="location.href='@Url.Action("GetShippingInfo", "StorePage")'"/></p>
+	onclick="location.href='@Url.Action("AddOrder", "StorePage")'"/></p>
 
 }
 

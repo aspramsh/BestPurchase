@@ -1,0 +1,101 @@
+﻿@model BestPurchase.ServiceLayer.Models.OrderModel
+
+@{
+    ViewBag.Title = "User Details";
+}
+
+<h2>User Details</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+			<label style=" margin-right:20px;">First Name: </label>
+                @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })<br>
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">Last Name: </label>
+			@Html.TextBoxFor(x => x.LastName, new { @required = "required", @class = "form-control" })
+			<br>
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">Address: </label>
+			@Html.TextBoxFor(x => x.Address, new { @required = "required", @class = "form-control" })
+			<br>
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">City: </label>
+			@Html.TextBoxFor(x => x.City, new { @class = "form-control" })
+			<br>
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">State: </label>
+			@Html.TextBoxFor(x => x.State, new { @class = "form-control" })
+			<br>
+                @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">Postal Code: </label>
+			@Html.TextBoxFor(x => x.PostalCode, new { @class = "form-control" })
+			<br>
+                @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">Country: </label>
+			@Html.TextBoxFor(x => x.Country, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">Phone: </label>
+			@Html.TextBoxFor(x => x.Phone, new { @class = "form-control" })
+			<br>
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">E-Mail: </label>
+			@Html.TextBoxFor(x => x.Email, new { @required = "required", @class = "form-control" })
+			<br>
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+
+        <div class="form-group">
+			<label style=" margin-right:20px;">Username: </label>
+			@Html.TextBoxFor(x => x.UserName, new { @class = "form-control" })
+			<br>
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            </div>
+		<br />
+		<br />
+		@for (var i = 0; i < Model.Cart.Count(); ++i)
+		{
+
+			var item = Model.Cart[i];
+			<div style="display: none;">@Html.EditorFor(model => model.Cart[i])</div>
+		}
+        <div class="form-group">
+			<input type="submit" value="Submit" class="btn btn-default" />
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

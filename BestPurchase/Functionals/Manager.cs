@@ -179,19 +179,19 @@ namespace BestPurchase.ServiceLayer.Functionals
         #endregion
 
         #region Order
-        private User CreateUserFromUserModel(UserModel userModel)
+        private User CreateUserFromUserModel(OrderModel order)
         {
             User user = new User();
-            user.FirstName = userModel.FirstName;
-            user.LastName = userModel.LastName;
-            user.Address = userModel.Address;
-            user.City = userModel.City;
-            user.State = userModel.State;
-            user.Country = userModel.Country;
-            user.PostalCode = userModel.PostalCode;
-            user.Phone = userModel.Phone;
-            user.Email = userModel.Email;
-            user.UserName = userModel.UserName;
+            user.FirstName = order.FirstName;
+            user.LastName = order.LastName;
+            user.Address =order.Address;
+            user.City = order.City;
+            user.State = order.State;
+            user.Country = order.Country;
+            user.PostalCode = order.PostalCode;
+            user.Phone = order.Phone;
+            user.Email = order.Email;
+            user.UserName = order.UserName;
             return user;
         }
         private Order CreateOrderFromCartContent(List<CartModel> cartContent)
@@ -205,10 +205,10 @@ namespace BestPurchase.ServiceLayer.Functionals
             }
             return order;
         }
-        public string AddOrder(CartAndUser info)
+        public string AddOrder(OrderModel ord)
         {
-            User user = this.CreateUserFromUserModel(info.user);
-            Order order = this.CreateOrderFromCartContent(info.Cart);
+            User user = this.CreateUserFromUserModel(ord);
+            Order order = this.CreateOrderFromCartContent(ord.Cart);
             order.Orderer = user;
             string baseUrl = ConfigurationManager.ConnectionStrings["MLServerName"].ConnectionString;
             string url = baseUrl + DestinationNames.AddOrder;
